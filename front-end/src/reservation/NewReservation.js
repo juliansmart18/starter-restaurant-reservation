@@ -20,6 +20,9 @@ function NewReservation() {
 
   function handleNewReservationSubmit(newReservation) {
     newReservation = { ...newReservation, people: Number(newReservation.people) };
+    if (newReservation.reservation_time.length === 5) {
+      newReservation = { ...newReservation, reservation_time: (newReservation.reservation_time + ":00")}
+  }
     setReservationError(null); // Clear any previous errors
     createReservation(newReservation)
       .then((data) => {
@@ -34,6 +37,11 @@ function NewReservation() {
       });
   }
 
+  function handleCancel() {
+    console.log("NEW RESERVATION CANCEL")
+    history.push("/dashboard");
+}
+
   return (
     <div>
       <h1>Create a new reservation</h1>
@@ -41,6 +49,7 @@ function NewReservation() {
       <ReservationForm
         initialFormState={initialFormState}
         submitAction={handleNewReservationSubmit}
+        handleCancel={handleCancel}
       />
     </div>
   );
