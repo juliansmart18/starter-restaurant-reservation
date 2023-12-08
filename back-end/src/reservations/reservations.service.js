@@ -43,11 +43,6 @@ function read(reservation_id) {
     .orderBy("reservation_date");
   }
 
-function list() {
-  return knex("reservations")
-  .select("*")
-}
-
 function update(updatedReservation) {
   return knex("reservations")
     .where({ reservation_id: updatedReservation.reservation_id })
@@ -58,7 +53,6 @@ function update(updatedReservation) {
 module.exports = {
     create,
     read,
-    list,
     listByDate,
     listByMobileNumber,
     update

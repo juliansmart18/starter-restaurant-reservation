@@ -302,14 +302,6 @@ async function list(req, res) {
     res.json({
       data,
     });
-
-
-    // the response below lists all reservations and may be used by a feature in the future
-  } else {
-    const data = await reservationsService.list();
-    res.json({
-      data,
-    })
   }
 }
 
