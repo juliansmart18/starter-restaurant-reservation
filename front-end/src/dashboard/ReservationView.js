@@ -23,7 +23,10 @@ async function handleCancel() {
   }
   }
 
-  const {first_name, last_name, people, mobile_number, status, reservation_id, reservation_time, reservation_date} = reservation
+  const {first_name, last_name, people, mobile_number, status, reservation_id, reservation_time, reservation_date} = reservation;
+
+  const reservationTimeComponents = reservation_time.split(":");
+  const formattedTime = reservationTimeComponents[0] + ":" + reservationTimeComponents[1]
 
     return (
         <div>
@@ -36,10 +39,10 @@ async function handleCancel() {
       Mobile Number: {mobile_number}
     </p>
     <p className="card-text">
-      Time: {reservation_time}
+      Time: {formattedTime}
     </p>
-    <p>Date: {reservation_date}</p>
-    <p data-reservation-id-status={reservation_id}>Status: {status}</p>
+    <p>Date: {reservation_date.split("T")[0]}</p>
+    <p className="badge badge-dark" data-reservation-id-status={reservation_id}>Status: {status}</p>
     
   </div>
   <div class="d-flex justify-content-between">

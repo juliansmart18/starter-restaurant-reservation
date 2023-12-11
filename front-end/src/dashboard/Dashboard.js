@@ -72,7 +72,7 @@ function Dashboard({ date }) {
         </div>
       {reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
       <div>
-      <h4 className="mb-0 m-2">Tables</h4>
+      <h4 className="mb-0 m-2 mt-5">Tables</h4>
         {tables.map((table)=> <TableView key={table.table_id} table={table} setTables={setTables} setReservations={setReservations} date={date} />)}
       </div>
       <ErrorAlert error={reservationsError} />

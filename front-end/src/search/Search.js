@@ -25,7 +25,7 @@ function Search() {
   
     return (
       <div>
-        <h1 className="m-2">Search for a reservation's mobile number</h1>
+        <h1 className="m-2">Search</h1>
         <input
           className="form-group form-control m-2"
           type="text"
