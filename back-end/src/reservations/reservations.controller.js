@@ -141,23 +141,12 @@ function validateTime(req, res, next) {
       status: 400,
       message: "Must have a reservation_time property.",
     });
-  } else if (reservation_time.length === 5 && !timeRegex.test(reservation_time)) {
+  } else if ((reservation_time.length === 5 && !timeRegex.test(reservation_time)) || (reservation_time.length === 8 && !timeRegexSeconds.test(reservation_time)) || (reservation_time.length !== 5 && reservation_time.length !== 8)) {
       return next({
         status: 400,
         message: "Invalid reservation_time format. Please use the HH:mm or HH:mm:ss format.",
       });
-  } else if (reservation_time.length === 8 && !timeRegexSeconds.test(reservation_time)) {
-      return next({
-        status: 400,
-        message: "Invalid reservation_time format. Please use the HH:mm or HH:mm:ss format.",
-      });
-  } else if (reservation_time.length !== 5 && reservation_time.length !== 8) {
-    return next({
-      status: 400,
-      message: "Invalid reservation_time format. Please use the HH:mm or HH:mm:ss format.",
-    });
   }
-
   return next();
 }
 
@@ -165,10 +154,10 @@ function validateTime(req, res, next) {
 
 function validateReservationTime(req, res, next) {
   const {
-    data: { reservation_time, reservation_date },
+    data: { reservation_time },
   } = req.body;
 
-  const isValidTime = isTimeValid(reservation_time, reservation_date);
+  const isValidTime = isTimeValid(reservation_time);
 
   if (!isValidTime) {
     return next({
@@ -180,27 +169,9 @@ function validateReservationTime(req, res, next) {
   return next();
 }
 
-function isTimeValid(reservation_time, reservation_date) {
+function isTimeValid(reservation_time) {
   const openingTime = "10:30";
   const closingTime = "21:30";
-
-  const selectedTime = `${reservation_date}T${reservation_time}`;
-  
-  // Adjust the selected time to the client's time zone
-  const selectedDateTime = new Date(selectedTime);
-  const timeZoneOffset = selectedDateTime.getTimezoneOffset();
-  const selectedTimeAdjusted = new Date(selectedDateTime.getTime() - timeZoneOffset * 60 * 1000)
-    .toISOString()
-    .split('T')[1];
-
-  // Adjust the current time to the client's time zone
-  // const currentTime = new Date();
-  // const currentTimeAdjusted = new Date(currentTime.getTime() - timeZoneOffset * 60 * 1000)
-  //   .toISOString()
-  //   .split('T')[1];
-
-  // optional later, add functionality to check if the time is earlier on the current day
-
 
 
   return (
@@ -267,6 +238,25 @@ function validateIsNotCurrentlyFinished(req, res, next) {
   return next();
 }
 
+function validateMobileNumber(req, res, next) {
+  const mobile_number = req.query.mobile_number;
+  const mobileNumberRegex = /^[\d()-]+$/;
+
+  if (!mobile_number) {
+    // If mobile_number is not provided, move to the next middleware
+    return next();
+  } else if (mobileNumberRegex.test(mobile_number)) {
+    // If mobile_number matches the regex, move to the next middleware
+    return next();
+  } else {
+    // If mobile_number is provided but doesn't match the regex, return an error
+    return next({
+      status: 400,
+      message: "Invalid mobile_number. It should only include (,),-, and numbers.",
+    });
+  }
+}
+
 // CRUD operations
 
 async function create(req, res) {
@@ -330,7 +320,7 @@ module.exports = {
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
-  list: asyncErrorBoundary(list),
+  list: [validateMobileNumber, asyncErrorBoundary(list)],
   update: [asyncErrorBoundary(reservationExists),
     validateStatusIsUnknown,
     validateIsNotCurrentlyFinished,

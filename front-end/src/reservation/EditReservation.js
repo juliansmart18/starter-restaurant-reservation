@@ -10,12 +10,8 @@ function EditReservation() {
     const { reservationId } = useParams();
     const history = useHistory();
 
-    console.log(reservation)
-
     useEffect(() => {
         const abortController = new AbortController();
-        
-    
         // Load tables only once
         setReservationError(null);
         readReservation(reservationId, abortController.signal)
@@ -35,20 +31,18 @@ function EditReservation() {
         if (updatedReservation.reservation_time.length === 5) {
             updatedReservation = { ...updatedReservation, reservation_time: (updatedReservation.reservation_time + ":00")}
         }
+        const abortController = new AbortController();
         setReservationError(null); // Clear any previous errors
-        updateReservation(updatedReservation)
+        updateReservation(updatedReservation, abortController.signal)
           .then((data) => {
             history.push(`/dashboard?date=${updatedReservation.reservation_date}`);
           })
-          .catch((error) => {
-            // Handle API request errors here
-            console.error("Error creating reservation:", error);
-            setReservationError(error); // Set the error state for rendering in UI
-          });
+          .catch(setReservationError);
+    
+        return () => abortController.abort();
       }
 
       function handleCancel() {
-        console.log("EDIT RESERVATION CANCEL")
         history.push("/dashboard");
     }
 

@@ -16,16 +16,14 @@ function TableForm() {
 
   function handleNewTableSubmit(newTable) {
     newTable = { ...newTable, capacity: Number(newTable.capacity) };
+    const abortController = new AbortController();
     setTablesError(null); // Clear any previous errors
-    createTable(newTable)
+    createTable(newTable, abortController.signal)
       .then((data) => {
         history.push("/dashboard");
       })
-      .catch((error) => {
-        // Handle API request errors here
-        console.error("Error creating table:", error);
-        setTablesError(error); // Set the error state for rendering in UI
-      });
+      .catch(setTablesError);
+    return () => abortController.abort();
   }
 
   const handleChange = ({ target }) => {

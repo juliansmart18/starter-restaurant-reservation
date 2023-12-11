@@ -21,7 +21,6 @@ function Dashboard({ date }) {
   const [reservationsError, setReservationsError] = useState(null);
   const [tablesError, setTablesError] = useState(null);
   const [currentDate, setCurrentDate] = useState(date);
-  // date = currentDate;
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

@@ -5,7 +5,7 @@ function NewTable() {
 
 
     return <div>
-        new table form here
+        <h1>Create a new table</h1>
         <TableForm />
     </div>
 }

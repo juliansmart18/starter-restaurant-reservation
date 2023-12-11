@@ -11,6 +11,8 @@ function SeatReservation() {
   const [tables, setTables] = useState([]);
   const [reservation, setReservation] = useState({});
   const [tablesError, setTablesError] = useState(null);
+  const [reservationError, setReservationError] = useState(null);
+  const [updateError, setUpdateError] = useState(null);
   const [formData, setFormData] = useState({
     table_id: "",
     reservation_id: reservationId,
@@ -28,11 +30,19 @@ function SeatReservation() {
       })
       .catch(setTablesError);
 
-    readReservation(reservationId)
+    return () => abortController.abort();
+  }, [reservationId]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    setReservationError(null);
+
+    readReservation(reservationId, abortController.signal)
       .then((reservation) => {
         setReservation(reservation)
         console.log(reservation)
       })
+      .catch(setReservationError);
 
     return () => abortController.abort();
   }, [reservationId]);
@@ -62,22 +72,17 @@ function SeatReservation() {
         table_id: Number(selectedTable.table_id),
         reservation_id: Number(formData.reservation_id),
       };
+
+      const abortController = new AbortController();
+      setUpdateError(null);
   
-      updateTable(updatedTable)
+      updateTable(updatedTable, abortController.signal)
         .then(() => {
-          // Handle success if needed
-          console.log("Table updated successfully:", updatedTable);
           history.push("/dashboard");
         })
-        .catch((error) => {
-          // Handle errors
-          console.error("Error updating table:", error);
-          // Optionally, display an error message to the user
-        });
-    } else {
-      // Handle the case where an invalid table is selected
-      console.error("Invalid table selected or insufficient capacity.");
-      // Optionally, display an error message to the user
+        .catch(setUpdateError);
+
+        return () => abortController.abort();
     }
   }
 
@@ -120,7 +125,8 @@ function SeatReservation() {
       </form>
       }
       <ErrorAlert error={tablesError} />
-      
+      <ErrorAlert error={reservationError} />
+      <ErrorAlert error={updateError} />
     </div>
   );
 }

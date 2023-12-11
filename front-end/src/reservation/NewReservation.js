@@ -23,18 +23,16 @@ function NewReservation() {
     if (newReservation.reservation_time.length === 5) {
       newReservation = { ...newReservation, reservation_time: (newReservation.reservation_time + ":00")}
   }
+    const abortController = new AbortController();
     setReservationError(null); // Clear any previous errors
-    createReservation(newReservation)
+    createReservation(newReservation, abortController.signal)
       .then((data) => {
         const dateQueryParam = newReservation.reservation_date;
-        // console.log("RESERVATION DATE:", dateQueryParam);
         history.push(`/dashboard?date=${dateQueryParam}`);
       })
-      .catch((error) => {
-        // Handle API request errors here
-        console.error("Error creating reservation:", error);
-        setReservationError(error); // Set the error state for rendering in UI
-      });
+      .catch(setReservationError);
+    
+        return () => abortController.abort();
   }
 
   function handleCancel() {

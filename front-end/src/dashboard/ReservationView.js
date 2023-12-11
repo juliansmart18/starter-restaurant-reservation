@@ -1,8 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { cancelReservation, listReservationsByDate } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationView({reservation, date, setReservations}) {
+const [errorMessage, setErrorMessage] = useState(null);
 
 
 async function handleCancel() {
@@ -16,7 +18,7 @@ async function handleCancel() {
       const updatedReservations = await listReservationsByDate(date);
       setReservations(updatedReservations)
     } catch (error) {
-      console.error("Error canceling reservation:", error.message);
+      setErrorMessage(error)
     }
   }
   }
@@ -25,6 +27,7 @@ async function handleCancel() {
 
     return (
         <div>
+          <ErrorAlert error={errorMessage}/>
 <div className="card">
   <div className="card-body">
     <h4 className="card-title">{first_name} {last_name}</h4>

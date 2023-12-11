@@ -17,10 +17,9 @@ function Search() {
       const abortController = new AbortController();
       setReservationsError(null);
       setMobileNumber("");
-      listReservationsByMobileNumber(mobileNumber)
+      listReservationsByMobileNumber(mobileNumber, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-      console.log(reservations);
     return () => abortController.abort();
     };
   

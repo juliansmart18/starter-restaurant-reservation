@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { deleteReservationIdFromTable, listTables, listReservationsByDate } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function TableView({ table, setTables, setReservations, date }) {
+const [error, setError] = useState(null);
 
   async function finishTable() {
     const shouldFinish = window.confirm(
@@ -16,13 +18,14 @@ function TableView({ table, setTables, setReservations, date }) {
         setReservations(updatedReservations)
         setTables(updatedTables);
       } catch (error) {
-        console.error("Error finishing table:", error.message);
+        setError(error);
       }
     }
   }
 
     return (
       <div>
+        <ErrorAlert error={error} />
         <p>{table.table_id}</p>
         <p>Name: {table.table_name} - Capacity: {table.capacity}</p>
         <p data-table-id-status={table.table_id}>
