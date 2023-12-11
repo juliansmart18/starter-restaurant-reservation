@@ -76,11 +76,13 @@ function validateDateFormat(req, res, next) {
 
 function validateFutureDate(req, res, next) {
   const {
-    data: { reservation_date },
+    data: { reservation_date, reservation_time },
   } = req.body;
 
   let selectedDate = new Date(reservation_date);
   let currentDate = new Date();
+  const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
+  const selectedTimeMinutes = parseInt(reservation_time.split(":")[0]) * 60 + parseInt(reservation_time.split(":")[1]);
 
   // Adjust the selected date by considering the time zone offset
   const timeZoneOffset = currentDate.getTimezoneOffset();
@@ -90,7 +92,7 @@ function validateFutureDate(req, res, next) {
   selectedDate.setHours(0, 0, 0, 0);
   currentDate.setHours(0, 0, 0, 0);
 
-  if (selectedDate < currentDate) {
+  if (selectedDate.toISOString().split("T")[0] < currentDate.toISOString().split("T")[0] || (selectedDate.toISOString().split("T")[0] === currentDate.toISOString().split("T")[0] && selectedTimeMinutes < currentTime)) {
     return next({
       status: 400,
       message: "Reservation date must be in the future.",
