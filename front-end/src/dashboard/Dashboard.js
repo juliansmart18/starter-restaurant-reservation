@@ -33,40 +33,32 @@ function Dashboard({ date }) {
   }, [queryDate, currentDate]);
 
 
-  useEffect(() => {
-    async function loadDashboard() {
-      const abortController = new AbortController();
-      try {
-        setReservationsError(null);
-        const data = await listReservationsByDate(currentDate, abortController.signal);
-        setReservations(data);
-      } catch (error) {
-        setReservationsError(error);
-      } finally {
-        abortController.abort();
-      }
-    }
-    loadDashboard();
-  }, [currentDate])
+
+  useEffect(loadDashboard, [currentDate]);
+  function loadDashboard() {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    listReservationsByDate(currentDate, abortController.signal)
+      .then(setReservations)
+      .catch(setReservationsError);
+    return () => abortController.abort();
+  }
+
 
 
   useEffect(() => {
     
-    async function loadTables() {
-      const abortController = new AbortController();
-      try {
-        setTablesError(null);
-        const data = await listTables(abortController.signal)
-          setTables(data)
-      } catch (error) {
-        setTablesError(error)
-      } finally {
-        abortController.abort();
-      }
-    }
+    const abortController = new AbortController();
+    // Load tables only once
+    setTablesError(null);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setTablesError);
 
-    loadTables();
+    return () => abortController.abort();
   }, []);
+
+
 
   return (
     <main>
@@ -78,11 +70,11 @@ function Dashboard({ date }) {
           <Link to={`/dashboard?date=${next(currentDate)}`} className="btn btn-info">Next Day</Link>
         </div>
       </div>
-      {reservations && reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
+      {reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
 
       <div>
       <h4 className="mb-0">Tables</h4>
-        {tables && tables.map((table)=> <TableView key={table.table_id} table={table} setTables={setTables} setReservations={setReservations} date={date} />)}
+        {tables.map((table)=> <TableView key={table.table_id} table={table} setTables={setTables} setReservations={setReservations} date={date} />)}
       </div>
 
       <ErrorAlert error={reservationsError} />

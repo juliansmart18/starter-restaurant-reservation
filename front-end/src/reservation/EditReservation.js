@@ -26,6 +26,7 @@ function EditReservation() {
         return () => abortController.abort();
       }, [reservationId]);
 
+
       function handleEditSubmit(updatedReservation) {
         updatedReservation = { ...updatedReservation, people: Number(updatedReservation.people) };
         if (updatedReservation.reservation_time.length === 5) {
