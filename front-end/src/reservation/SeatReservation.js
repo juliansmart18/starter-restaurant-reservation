@@ -88,7 +88,7 @@ function SeatReservation() {
 
   return (
     <div>
-      seat reservation {reservationId}
+      <h1>Seat reservation {reservationId}</h1>
       {tables && <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="table_id">

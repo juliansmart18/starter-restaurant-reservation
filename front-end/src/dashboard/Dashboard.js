@@ -62,21 +62,19 @@ function Dashboard({ date }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
+      <h1 className="m-2">Dashboard</h1>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
-        <div>
-          <Link to={`/dashboard?date=${previous(currentDate)}`} className="btn btn-info">Previous Day</Link>
-          <Link to={`/dashboard?date=${next(currentDate)}`} className="btn btn-info">Next Day</Link>
-        </div>
+        <h4 className="mb-0 m-2">Reservations for {currentDate}</h4>
       </div>
-      {reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
-
       <div>
-      <h4 className="mb-0">Tables</h4>
+          <Link to={`/dashboard?date=${previous(currentDate)}`} className="btn btn-info m-2">Previous Day</Link>
+          <Link to={`/dashboard?date=${next(currentDate)}`} className="btn btn-info m-2">Next Day</Link>
+        </div>
+      {reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
+      <div>
+      <h4 className="mb-0 m-2">Tables</h4>
         {tables.map((table)=> <TableView key={table.table_id} table={table} setTables={setTables} setReservations={setReservations} date={date} />)}
       </div>
-
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tablesError} />
     </main>

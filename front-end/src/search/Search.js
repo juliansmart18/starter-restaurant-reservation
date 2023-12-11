@@ -25,14 +25,16 @@ function Search() {
   
     return (
       <div>
+        <h1 className="m-2">Search for a reservation's mobile number</h1>
         <input
+          className="form-group form-control m-2"
           type="text"
           name="mobile_number"
           placeholder="Enter a customer's phone number"
           value={mobileNumber}
           onChange={handleInputChange}
         />
-        <button type="submit" onClick={handleSearch}>Find</button>
+        <button className="btn btn-primary m-2" type="submit" onClick={handleSearch}>Find</button>
 
         {reservations && reservations.length > 0 && reservations.map((reservation) => 
         <ReservationView key={reservation.reservation_id} reservation={reservation} />

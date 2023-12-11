@@ -24,16 +24,17 @@ const [error, setError] = useState(null);
   }
 
     return (
-      <div>
+      <div className="card card-body m-2">
         <ErrorAlert error={error} />
-        <p>{table.table_id}</p>
-        <p>Name: {table.table_name} - Capacity: {table.capacity}</p>
-        <p data-table-id-status={table.table_id}>
+        <h6>Name: {table.table_name} - Capacity: {table.capacity}</h6>
+        <div className="d-flex justify-content-between">
+          <div>
+        <p className="badge badge-secondary" data-table-id-status={table.table_id}>
         {table.reservation_id ? 
           "occupied"
          : 
           "free"
-        }</p>
+        }</p></div>
         {table.reservation_id ? (
         <button onClick={finishTable} data-table-id-finish={table.table_id} data-reservation-id-finish={table.reservation_id} className="btn btn-primary m-1">
                   Finish
@@ -41,6 +42,7 @@ const [error, setError] = useState(null);
                 ) : (
                   ""
                 )}
+      </div>
       </div>
     );
   }

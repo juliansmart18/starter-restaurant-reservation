@@ -28,23 +28,28 @@ async function handleCancel() {
     return (
         <div>
           <ErrorAlert error={errorMessage}/>
-<div className="card">
+<div className="card m-2">
   <div className="card-body">
     <h4 className="card-title">{first_name} {last_name}</h4>
-    <h6 className="card-subtitle mb-2 text-muted">{people} people</h6>
+    <h6 className="card-subtitle mb-2 text-muted">Party of {people}</h6>
     <p className="card-text">
       Mobile Number: {mobile_number}
     </p>
     <p className="card-text">
-      Reservation Time: {reservation_time}
+      Time: {reservation_time}
     </p>
-    <p>RESERVATION DATE: {reservation_date}</p>
+    <p>Date: {reservation_date}</p>
     <p data-reservation-id-status={reservation_id}>Status: {status}</p>
-    {(status === "booked") && <Link to={`/reservations/${reservation_id}/seat`} className="btn btn-info">Seat</Link>}
+    
+  </div>
+  <div class="d-flex justify-content-between">
+  <div>
+  {(status === "booked") && <Link to={`/reservations/${reservation_id}/seat`} className="btn btn-info m-2">Seat</Link>}
   </div>
   <div>
-    <Link to={`/reservations/${reservation_id}/edit`} className="btn btn-info">Edit</Link>
-    <button onClick={handleCancel} data-reservation-id-cancel={reservation_id} className="btn btn-danger">Cancel</button>
+    <Link to={`/reservations/${reservation_id}/edit`} className="btn btn-info m-2">Edit</Link>
+    <button onClick={handleCancel} data-reservation-id-cancel={reservation_id} className="btn btn-danger m-2">Cancel</button>
+  </div>
   </div>
 </div>
         </div>
