@@ -76,17 +76,5 @@ This repository contains the source code for a Restaurant Reservation System, de
   - `npm run test:3:frontend` runs only the frontend tests for user story 3.
 - Run all tests with `npm test`.
 
-### Deployment
-- Deploy the application to production following your preferred deployment process.
-
-## Screenshots
-- To aid in understanding the end-to-end tests, screenshots are taken at various points.
-- Screenshots are saved in `./front-end/.screenshots`.
-
-## Notes
-- Follow the provided hints and instructions for handling dates, times, and validations.
-- For any issues or questions, feel free to reach out for assistance.
 
 ---
-
-This readme provides an overview of the features, installation, usage, and testing procedures for the Restaurant Reservation System. For any further details or inquiries, please refer to the provided user stories and codebase.
