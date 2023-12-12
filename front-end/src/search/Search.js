@@ -19,7 +19,10 @@ function Search() {
       setMobileNumber("");
       listReservationsByMobileNumber(mobileNumber, abortController.signal)
       .then(setReservations)
-      .catch(setReservationsError);
+      .catch((error) => {
+        setReservations([]);
+        setReservationsError(error);
+      });
     return () => abortController.abort();
     };
   
