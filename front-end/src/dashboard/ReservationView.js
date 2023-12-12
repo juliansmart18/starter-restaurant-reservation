@@ -45,7 +45,7 @@ async function handleCancel() {
     <p className="badge badge-dark" data-reservation-id-status={reservation_id}>Status: {status}</p>
     
   </div>
-  <div class="d-flex justify-content-between">
+  <div className="d-flex justify-content-between">
   <div>
   {(status === "booked") && <Link to={`/reservations/${reservation_id}/seat`} className="btn btn-info m-2">Seat</Link>}
   </div>
