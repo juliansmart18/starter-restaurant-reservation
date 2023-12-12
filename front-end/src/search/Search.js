@@ -43,7 +43,7 @@ function Search() {
         <ReservationView key={reservation.reservation_id} reservation={reservation} />
         )}
 
-        {(reservations && reservations.length === 0) && <p>
+        {(reservations && reservations.length === 0) && <p className="m-2">
             No reservations found</p>}
 
         <ErrorAlert error={reservationsError} />

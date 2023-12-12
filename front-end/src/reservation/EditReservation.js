@@ -48,6 +48,7 @@ function EditReservation() {
     }
 
     return <div>
+        <h1>Edit Reservation</h1>
         <ErrorAlert error={reservationError} />
 
         {reservation.reservation_id && <ReservationForm

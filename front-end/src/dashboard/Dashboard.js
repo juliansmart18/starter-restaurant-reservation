@@ -68,6 +68,7 @@ function Dashboard({ date }) {
       </div>
       <div>
           <Link to={`/dashboard?date=${previous(currentDate)}`} className="btn btn-info m-2">Previous Day</Link>
+          <Link to={`/dashboard?date=${date}`} className="btn btn-info m-2">Today</Link>
           <Link to={`/dashboard?date=${next(currentDate)}`} className="btn btn-info m-2">Next Day</Link>
         </div>
       {reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} date={date} setReservations={setReservations} />)}
