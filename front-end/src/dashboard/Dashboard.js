@@ -60,6 +60,8 @@ function Dashboard({ date }) {
 
 
 
+
+
   return (
     <main>
       <h1 className="m-2">Dashboard</h1>

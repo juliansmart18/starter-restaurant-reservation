@@ -18,9 +18,13 @@ import { today } from "../utils/date-time";
  * @returns {JSX.Element}
  */
 function Routes() {
+  
   return (
     <Switch>
       <Route exact={true} path="/">
+        <Redirect to={"/dashboard"} />
+      </Route>
+      <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
@@ -34,9 +38,6 @@ function Routes() {
       </Route>
       <Route path="/reservations/:reservationId/seat">
         <SeatReservation />
-      </Route>
-      <Route path="/reservations">
-        <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/tables/new">
         <NewTable />

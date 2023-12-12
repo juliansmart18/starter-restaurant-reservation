@@ -5,6 +5,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function Search() {
     const [mobileNumber, setMobileNumber] = useState("");
+    const [searchedNumber, setSearchedNumber] = useState("");
     const [reservationsError, setReservationsError] = useState(null);
     const [reservations, setReservations] = useState([]);
   
@@ -16,6 +17,7 @@ function Search() {
       // You can make an API call or perform any action with the phone number here
       const abortController = new AbortController();
       setReservationsError(null);
+      setSearchedNumber(mobileNumber);
       setMobileNumber("");
       listReservationsByMobileNumber(mobileNumber, abortController.signal)
       .then(setReservations)
@@ -40,7 +42,7 @@ function Search() {
         <button className="btn btn-primary m-2" type="submit" onClick={handleSearch}>Find</button>
 
         {reservations && reservations.length > 0 && reservations.map((reservation) => 
-        <ReservationView key={reservation.reservation_id} reservation={reservation} />
+        <ReservationView key={reservation.reservation_id} reservation={reservation} mobileNumber={searchedNumber} setReservations={setReservations} />
         )}
 
         {(reservations && reservations.length === 0) && <p className="m-2">

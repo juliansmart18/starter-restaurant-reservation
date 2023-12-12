@@ -1,11 +1,10 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import { cancelReservation, listReservationsByDate } from "../utils/api";
+import { cancelReservation, listReservationsByDate, listReservationsByMobileNumber } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-function ReservationView({reservation, date, setReservations}) {
+function ReservationView({reservation, date, setReservations, mobileNumber }) {
 const [errorMessage, setErrorMessage] = useState(null);
-
 
 async function handleCancel() {
   const shouldCancel = window.confirm(
@@ -15,8 +14,13 @@ async function handleCancel() {
   if (shouldCancel) {
     try {
       await cancelReservation(reservation.reservation_id);
-      const updatedReservations = await listReservationsByDate(date);
-      setReservations(updatedReservations)
+      if (date) {
+        const updatedReservations = await listReservationsByDate(date);
+        setReservations(updatedReservations)
+      } else if (mobileNumber) {
+        const reservationsByMobileNumber = await listReservationsByMobileNumber(mobileNumber);
+        setReservations(reservationsByMobileNumber)
+      }
     } catch (error) {
       setErrorMessage(error)
     }
