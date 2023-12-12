@@ -197,6 +197,22 @@ function validatePeople(req, res, next) {
   return next();
 }
 
+function validateReservationMobileNumber(req, res, next) {
+  const {
+    data: { mobile_number },
+  } = req.body;
+  const mobileNumberRegex = /^[\d()-]+$/;
+   if (mobileNumberRegex.test(mobile_number)) {
+    // If mobile_number matches the regex, move to the next middleware
+    return next();
+  } else {
+    return next({
+      status: 400,
+      message: "Invalid mobile_number. It should only include (,),-, and numbers.",
+    });
+  }
+}
+
 // VALIDATION FOR US-05 RESERVATION STATUS
 
 function validateStatusIsNotSeatedOrFinished(req, res, next) {
@@ -315,6 +331,7 @@ module.exports = {
     validateIsNotTuesday,
     validateTime,
     validateReservationTime,
+    validateReservationMobileNumber,
     validatePeople,
     validateStatusIsNotSeatedOrFinished,
     asyncErrorBoundary(create),
@@ -334,6 +351,7 @@ module.exports = {
     validateIsNotTuesday,
     validateTime,
     validateReservationTime,
+    validateReservationMobileNumber,
     validatePeople,
     asyncErrorBoundary(update)
   ]

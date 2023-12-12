@@ -50,8 +50,8 @@ async function handleCancel() {
   {(status === "booked") && <Link to={`/reservations/${reservation_id}/seat`} className="btn btn-info m-2">Seat</Link>}
   </div>
   <div>
-    <Link to={`/reservations/${reservation_id}/edit`} className="btn btn-info m-2">Edit</Link>
-    <button onClick={handleCancel} data-reservation-id-cancel={reservation_id} className="btn btn-danger m-2">Cancel</button>
+    {(status === "booked" || status === "seated") && <Link to={`/reservations/${reservation_id}/edit`} className="btn btn-info m-2">Edit</Link>}
+    {(status !== "cancelled") && <button onClick={handleCancel} data-reservation-id-cancel={reservation_id} className="btn btn-danger m-2">Cancel</button>}
   </div>
   </div>
 </div>
