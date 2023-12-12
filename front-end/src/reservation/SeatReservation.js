@@ -40,7 +40,6 @@ function SeatReservation() {
     readReservation(reservationId, abortController.signal)
       .then((reservation) => {
         setReservation(reservation)
-        console.log(reservation)
       })
       .catch(setReservationError);
 
@@ -53,7 +52,6 @@ function SeatReservation() {
         ...prevFormData,
         [target.name]: target.value,
       };
-      console.log(updatedFormData);
       return updatedFormData;
     });
   };
