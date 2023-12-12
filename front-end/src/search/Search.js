@@ -31,7 +31,7 @@ function Search() {
         <h1 className="m-2">Search</h1>
         <input
           className="form-group form-control m-2"
-          type="text"
+          type="number"
           name="mobile_number"
           placeholder="Enter a customer's phone number"
           value={mobileNumber}
