@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { today } from "../utils/date-time";
 
 function ReservationForm({ initialFormState, submitAction, handleCancel }) {
   const [formData, setFormData] = useState(initialFormState);
@@ -18,7 +19,11 @@ function ReservationForm({ initialFormState, submitAction, handleCancel }) {
         const currentTime = timeStamp.getHours() * 60 + timeStamp.getMinutes();
         const selectedTimeMinutes = parseInt(selectedTime.split(":")[0]) * 60 + parseInt(selectedTime.split(":")[1]);
 
-        if (formData.reservation_date === timeStamp.toISOString().split('T')[0] && currentTime > selectedTimeMinutes) {
+        const todaysDate = today();
+
+        console.log(formData.reservation_date === todaysDate)
+
+        if (formData.reservation_date === todaysDate && currentTime > selectedTimeMinutes) {
           setIsValidTime(false);
         } else if (selectedTimeMinutes >= parseInt(openingTime.split(":")[0]) * 60 + parseInt(openingTime.split(":")[1]) &&
           selectedTimeMinutes <= parseInt(closingTime.split(":")[0]) * 60 + parseInt(closingTime.split(":")[1])) {

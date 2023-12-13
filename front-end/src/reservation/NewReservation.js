@@ -36,7 +36,6 @@ function NewReservation() {
   }
 
   function handleCancel() {
-    console.log("NEW RESERVATION CANCEL")
     history.push("/dashboard");
 }
 
