@@ -21,8 +21,6 @@ function ReservationForm({ initialFormState, submitAction, handleCancel }) {
 
         const todaysDate = today();
 
-        console.log(formData.reservation_date === todaysDate)
-
         if (formData.reservation_date === todaysDate && currentTime > selectedTimeMinutes) {
           setIsValidTime(false);
         } else if (selectedTimeMinutes >= parseInt(openingTime.split(":")[0]) * 60 + parseInt(openingTime.split(":")[1]) &&

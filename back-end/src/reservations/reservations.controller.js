@@ -170,13 +170,13 @@ function validateReservationTime(req, res, next) {
 }
 
 function isTimeValid(reservation_time) {
-  const openingTime = "10:30";
-  const closingTime = "21:30";
-
+  const openingTime = new Date("2023-01-01T10:30:00");
+  const closingTime = new Date("2023-01-01T21:30:00");
+  const reservationTime = new Date("2023-01-01T" + reservation_time);
 
   return (
-    reservation_time >= openingTime &&
-    reservation_time <= closingTime
+    reservationTime >= openingTime &&
+    reservationTime <= closingTime
   );
 }
 
