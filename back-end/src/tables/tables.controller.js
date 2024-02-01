@@ -164,7 +164,6 @@ async function list(req, res, next) {
       table_id: res.locals.table.table_id,
     };
     const data = await tablesService.update(updatedTable);
-    console.log("DATA:",data)
     await tablesService.updateReservationStatusToSeated(updatedTable.reservation_id)
     res.status(200).json({ data });
   }
