@@ -134,8 +134,6 @@ async function create(req, res) {
 
 async function list(req, res, next) {
   const free = req.query.free;
-  // console.log(free)
-  // console.log("free === true", free === "true")
   if (free === "true") {
     const data = await tablesService.listAvailable();
     data.sort((A, B) => {
