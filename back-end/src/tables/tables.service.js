@@ -38,7 +38,8 @@ function update(updatedTable) {
       .update({
         reservation_id: updatedTable.reservation_id,
       })
-      .returning("*");
+      .returning("*")
+      .then(table => table[0]);
   }
 
 function updateReservationStatusToSeated(reservation_id) {

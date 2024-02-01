@@ -47,7 +47,8 @@ function update(updatedReservation) {
   return knex("reservations")
     .where({ reservation_id: updatedReservation.reservation_id })
     .update(updatedReservation, "reservations.*")
-    .returning("*");
+    .returning("*")
+    .then(reservation => reservation[0]);
 }
 
 module.exports = {

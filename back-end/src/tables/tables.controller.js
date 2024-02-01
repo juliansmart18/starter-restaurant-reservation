@@ -134,8 +134,6 @@ async function create(req, res) {
 
 async function list(req, res, next) {
   const free = req.query.free;
-  // console.log(free)
-  // console.log("free === true", free === "true")
   if (free === "true") {
     const data = await tablesService.listAvailable();
     data.sort((A, B) => {
@@ -166,6 +164,7 @@ async function list(req, res, next) {
       table_id: res.locals.table.table_id,
     };
     const data = await tablesService.update(updatedTable);
+    console.log("DATA:",data)
     await tablesService.updateReservationStatusToSeated(updatedTable.reservation_id)
     res.status(200).json({ data });
   }

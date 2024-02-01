@@ -134,7 +134,7 @@ function validateIsNotTuesday(req, res, next) {
   return next();
 }
 
-// time is valid
+// this time validator accepts both time formats HH:mm:ss and HH:mm
 
 function validateTime(req, res, next) {
   const {
@@ -164,7 +164,7 @@ function validateTime(req, res, next) {
   return next();
 }
 
-// validate reservation time is between 10:30 AM and 9:30 PM
+// validates reservation time is between 10:30 AM and 9:30 PM
 
 function validateReservationTime(req, res, next) {
   const {
@@ -335,7 +335,7 @@ async function update(req, res, next) {
     reservation_id: res.locals.reservation.reservation_id,
   };
   const data = await reservationsService.update(updatedReservation);
-  res.status(200).json({ data: data[0] });
+  res.status(200).json({ data });
 }
 
 module.exports = {
