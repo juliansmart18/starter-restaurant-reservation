@@ -57,11 +57,9 @@ function validateDateFormat(req, res, next) {
     data: { reservation_date },
   } = req.body;
 
-  const dateOnly = reservation_date.split("T")[0]
+  const dateOnly = reservation_date.split("T")[0];
 
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
-  
 
   if (!reservation_date || !dateRegex.test(dateOnly)) {
     return next({
@@ -82,17 +80,25 @@ function validateFutureDate(req, res, next) {
   let selectedDate = new Date(reservation_date);
   let currentDate = new Date();
   const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
-  const selectedTimeMinutes = parseInt(reservation_time.split(":")[0]) * 60 + parseInt(reservation_time.split(":")[1]);
+  const selectedTimeMinutes =
+    parseInt(reservation_time.split(":")[0]) * 60 +
+    parseInt(reservation_time.split(":")[1]);
 
   // Adjust the selected date by considering the time zone offset
   const timeZoneOffset = currentDate.getTimezoneOffset();
   selectedDate = new Date(selectedDate.getTime() + timeZoneOffset * 60 * 1000);
-  
+
   // Reset the time components to midnight for accurate date comparison
   selectedDate.setHours(0, 0, 0, 0);
   currentDate.setHours(0, 0, 0, 0);
 
-  if (selectedDate.toISOString().split("T")[0] < currentDate.toISOString().split("T")[0] || (selectedDate.toISOString().split("T")[0] === currentDate.toISOString().split("T")[0] && selectedTimeMinutes < currentTime)) {
+  if (
+    selectedDate.toISOString().split("T")[0] <
+      currentDate.toISOString().split("T")[0] ||
+    (selectedDate.toISOString().split("T")[0] ===
+      currentDate.toISOString().split("T")[0] &&
+      selectedTimeMinutes < currentTime)
+  ) {
     return next({
       status: 400,
       message: "Reservation date must be in the future.",
@@ -114,7 +120,9 @@ function validateIsNotTuesday(req, res, next) {
   const timeZoneOffset = currentDate.getTimezoneOffset();
 
   // Adjust the selected date by adding the time zone offset
-  const adjustedSelectedDate = new Date(selectedDate.getTime() + timeZoneOffset * 60 * 1000);
+  const adjustedSelectedDate = new Date(
+    selectedDate.getTime() + timeZoneOffset * 60 * 1000
+  );
 
   if (adjustedSelectedDate.getDay() === 2) {
     return next({
@@ -141,11 +149,17 @@ function validateTime(req, res, next) {
       status: 400,
       message: "Must have a reservation_time property.",
     });
-  } else if ((reservation_time.length === 5 && !timeRegex.test(reservation_time)) || (reservation_time.length === 8 && !timeRegexSeconds.test(reservation_time)) || (reservation_time.length !== 5 && reservation_time.length !== 8)) {
-      return next({
-        status: 400,
-        message: "Invalid reservation_time format. Please use the HH:mm or HH:mm:ss format.",
-      });
+  } else if (
+    (reservation_time.length === 5 && !timeRegex.test(reservation_time)) ||
+    (reservation_time.length === 8 &&
+      !timeRegexSeconds.test(reservation_time)) ||
+    (reservation_time.length !== 5 && reservation_time.length !== 8)
+  ) {
+    return next({
+      status: 400,
+      message:
+        "Invalid reservation_time format. Please use the HH:mm or HH:mm:ss format.",
+    });
   }
   return next();
 }
@@ -162,7 +176,8 @@ function validateReservationTime(req, res, next) {
   if (!isValidTime) {
     return next({
       status: 400,
-      message: "Invalid reservation_time. Please select a time between 10:30 AM and 9:30 PM.",
+      message:
+        "Invalid reservation_time. Please select a time between 10:30 AM and 9:30 PM.",
     });
   }
 
@@ -174,10 +189,7 @@ function isTimeValid(reservation_time) {
   const closingTime = new Date("2023-01-01T21:30:00");
   const reservationTime = new Date("2023-01-01T" + reservation_time);
 
-  return (
-    reservationTime >= openingTime &&
-    reservationTime <= closingTime
-  );
+  return reservationTime >= openingTime && reservationTime <= closingTime;
 }
 
 // people is a number over 0
@@ -202,13 +214,14 @@ function validateReservationMobileNumber(req, res, next) {
     data: { mobile_number },
   } = req.body;
   const mobileNumberRegex = /^[\d()-]+$/;
-   if (mobileNumberRegex.test(mobile_number)) {
+  if (mobileNumberRegex.test(mobile_number)) {
     // If mobile_number matches the regex, move to the next middleware
     return next();
   } else {
     return next({
       status: 400,
-      message: "Invalid mobile_number. It should only include (,),-, and numbers.",
+      message:
+        "Invalid mobile_number. It should only include (,),-, and numbers.",
     });
   }
 }
@@ -219,7 +232,7 @@ function validateStatusIsNotSeatedOrFinished(req, res, next) {
   const {
     data: { status },
   } = req.body;
-   if (status === "seated" || status === "finished") {
+  if (status === "seated" || status === "finished") {
     return next({
       status: 400,
       message: `New reservation cannot have a ${status} status.`,
@@ -237,7 +250,9 @@ function validateStatusIsUnknown(req, res, next) {
   if (!validStatuses.includes(status)) {
     return next({
       status: 400,
-      message: `Reservation cannot have a ${status} status. Valid statuses are: ${validStatuses.join(", ")}.`,
+      message: `Reservation cannot have a ${status} status. Valid statuses are: ${validStatuses.join(
+        ", "
+      )}.`,
     });
   }
   return next();
@@ -268,7 +283,8 @@ function validateMobileNumber(req, res, next) {
     // If mobile_number is provided but doesn't match the regex, return an error
     return next({
       status: 400,
-      message: "Invalid mobile_number. It should only include (,),-, and numbers.",
+      message:
+        "Invalid mobile_number. It should only include (,),-, and numbers.",
     });
   }
 }
@@ -293,6 +309,7 @@ function read(req, res) {
 async function list(req, res) {
   const date = req.query.date;
   const mobile_number = req.query.mobile_number;
+
   if (date) {
     const data = await reservationsService.listByDate(date);
     data.sort((A, B) => {
@@ -303,9 +320,8 @@ async function list(req, res) {
     res.json({
       data,
     });
-    
-
-  } if (mobile_number) {
+  }
+  if (mobile_number) {
     const data = await reservationsService.listByMobileNumber(mobile_number);
     res.json({
       data,
@@ -338,10 +354,12 @@ module.exports = {
   ],
   read: [asyncErrorBoundary(reservationExists), read],
   list: [validateMobileNumber, asyncErrorBoundary(list)],
-  update: [asyncErrorBoundary(reservationExists),
+  update: [
+    asyncErrorBoundary(reservationExists),
     validateStatusIsUnknown,
     validateIsNotCurrentlyFinished,
-    asyncErrorBoundary(update)],
+    asyncErrorBoundary(update),
+  ],
   updateInfo: [
     asyncErrorBoundary(reservationExists),
     validateReservationData,
@@ -353,6 +371,6 @@ module.exports = {
     validateReservationTime,
     validateReservationMobileNumber,
     validatePeople,
-    asyncErrorBoundary(update)
-  ]
+    asyncErrorBoundary(update),
+  ],
 };
