@@ -37,16 +37,18 @@ async function handleCancel() {
           <ErrorAlert error={errorMessage}/>
 <div className="card m-2">
   <div className="card-body">
+    <div className="d-flex justify-content-between">
     <h4 className="card-title">{first_name} {last_name}</h4>
-    <h6 className="card-subtitle mb-2 text-muted">Party of {people}</h6>
+    <h6 className="card-subtitle mb-2 text-muted p-2">Party of {people}</h6>
+    </div>
     <p className="card-text">
-      Mobile Number: {mobile_number}
+      <b>Mobile Number:</b> {mobile_number}
     </p>
     <p className="card-text">
-      Time: {formattedTime}
+      <b>Time:</b> {formattedTime}
     </p>
-    <p>Date: {reservation_date.split("T")[0]}</p>
-    <p className="badge badge-dark" data-reservation-id-status={reservation_id}>Status: {status}</p>
+    <p><b>Date:</b> {reservation_date.split("T")[0]}</p>
+    <p className="badge badge-pill badge-dark p-2" data-reservation-id-status={reservation_id}>Status: {status}</p>
     
   </div>
   <div className="d-flex justify-content-between">
